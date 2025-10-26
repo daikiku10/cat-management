@@ -1,11 +1,12 @@
 import { Image } from "expo-image";
-import { Platform, StyleSheet, Text } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 
 import { HelloWave } from "@/components/hello-wave";
 import ParallaxScrollView from "@/components/parallax-scroll-view";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Link } from "expo-router";
+import { TextInputFiled } from "@/components/ui/TextInputField";
 
 export default function HomeScreen() {
   return (
@@ -22,6 +23,9 @@ export default function HomeScreen() {
         <Text className="color-pink-700">Cat-Management🐾</Text>
         <HelloWave />
       </ThemedView>
+      <View>
+        <TextInputFiled label="ユーザー名" />
+      </View>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
