@@ -16,4 +16,4 @@ export const RegisterSchema = v.object({
   ),
 });
 
-export type RegisterSchemaType = v.InferOutput<typeof RegisterSchema>;
+export type RegisterInput = v.InferOutput<typeof RegisterSchema>;

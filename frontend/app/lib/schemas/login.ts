@@ -14,4 +14,4 @@ export const LiginSchema = v.object({
   ),
 });
 
-export type LoginSchemaType = v.InferOutput<typeof LiginSchema>;
+export type LoginInput = v.InferOutput<typeof LiginSchema>;
