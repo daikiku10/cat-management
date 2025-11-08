@@ -1,7 +1,7 @@
 import * as v from "valibot";
 import { messages } from "../validation/message";
 
-export const LiginSchema = v.object({
+export const LoginSchema = v.object({
   email: v.pipe(
     v.string(),
     v.nonEmpty(messages.required("メールアドレス")),
@@ -14,4 +14,4 @@ export const LiginSchema = v.object({
   ),
 });
 
-export type LoginInput = v.InferOutput<typeof LiginSchema>;
+export type LoginInput = v.InferOutput<typeof LoginSchema>;
