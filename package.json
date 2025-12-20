@@ -1,0 +1,8 @@
+{
+  "name": "cat-management",
+  "private": true,
+  "packageManager": "pnpm@9",
+  "scripts": {
+    "dev": "pnpm -r dev"
+  }
+}
