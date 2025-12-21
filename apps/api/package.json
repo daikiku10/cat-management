@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@repo/db": "workspace:*",
+    "@libsql/client": "^0.15.15",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^12.5.0",
     "drizzle-orm": "^0.45.1",
