@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title 'Claude Code' -message 'Claude Code' -subtitle '確認待ち' -sound Glass -activate com.microsoft.VSCode"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title 'Claude Code' -message 'Claude Code' -subtitle '処理終了' -sound Glass -activate com.microsoft.VSCode"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "feature-dev@claude-plugins-official": true
+  }
+}
