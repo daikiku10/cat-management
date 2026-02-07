@@ -3,7 +3,7 @@ import { getToken } from "@/lib/auth";
 
 const getBaseURL = () => {
   const host = process.env.EXPO_PUBLIC_API_HOST ?? "localhost";
-  return `http://${host}:3000`;
+  return `http://${host}:8080`;
 };
 
 export const apiClient = axios.create({
