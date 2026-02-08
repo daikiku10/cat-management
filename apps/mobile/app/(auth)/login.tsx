@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import { StyleSheet, KeyboardAvoidingView, Platform, View } from "react-native";
 import { Link } from "expo-router";
 import { isAxiosError } from "axios";
 
 import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
+import { GradientBackground } from "@/components/ui/gradient-background";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
+import { Colors, Shadows, BorderRadius } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function LoginScreen() {
   const { login } = useAuth();
+  const colorScheme = useColorScheme() ?? "light";
+  const colors = Colors[colorScheme];
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -33,48 +37,59 @@ export default function LoginScreen() {
   }
 
   return (
-    <ThemedView style={styles.container}>
+    <GradientBackground>
       <KeyboardAvoidingView
-        style={styles.inner}
+        style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <ThemedText type="title" style={styles.title}>
-          ログイン
-        </ThemedText>
-
-        {error !== "" && (
-          <ThemedText
-            style={styles.error}
-            lightColor="#DC2626"
-            darkColor="#EF4444"
-          >
-            {error}
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: colors.card,
+              shadowColor: colors.shadowColor,
+            },
+            Shadows.large,
+          ]}
+        >
+          <ThemedText type="title" style={styles.title}>
+            ログイン
           </ThemedText>
-        )}
 
-        <Input
-          label="メールアドレス"
-          placeholder="example@email.com"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
+          {error !== "" && (
+            <ThemedText
+              style={styles.error}
+              lightColor="#DC2626"
+              darkColor="#EF4444"
+            >
+              {error}
+            </ThemedText>
+          )}
 
-        <Input
-          label="パスワード"
-          placeholder="パスワード"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+          <Input
+            label="メールアドレス"
+            placeholder="example@email.com"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+          />
 
-        <Button title="ログイン" onPress={handleLogin} loading={loading} />
+          <Input
+            label="パスワード"
+            placeholder="パスワード"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
 
-        <Link href="/(auth)/register" style={styles.link}>
-          <ThemedText type="link">アカウントを作成する</ThemedText>
-        </Link>
+          <Button title="ログイン" onPress={handleLogin} loading={loading} />
+
+          <Link href="/(auth)/register" style={styles.link}>
+            <ThemedText type="link">アカウントを作成する</ThemedText>
+          </Link>
+        </View>
       </KeyboardAvoidingView>
-    </ThemedView>
+    </GradientBackground>
   );
 }
 
@@ -82,9 +97,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    paddingHorizontal: 20,
   },
-  inner: {
-    paddingHorizontal: 24,
+  card: {
+    borderRadius: BorderRadius.xl,
+    padding: 24,
     gap: 16,
   },
   title: {
@@ -97,5 +114,6 @@ const styles = StyleSheet.create({
   },
   link: {
     alignSelf: "center",
+    marginTop: 8,
   },
 });

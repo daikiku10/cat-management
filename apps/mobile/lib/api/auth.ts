@@ -15,7 +15,6 @@ export async function registerApi(
   email: string,
   password: string,
 ): Promise<void> {
-  console.log("Calling registerApi with", { email, password });
   await apiClient.post("/api/auth/register", { email, password });
 }
 

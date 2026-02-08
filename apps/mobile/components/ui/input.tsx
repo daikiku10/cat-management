@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -6,7 +7,7 @@ import {
 } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
-import { Colors } from "@/constants/theme";
+import { Colors, Shadows, BorderRadius } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
 type InputProps = TextInputProps & {
@@ -14,9 +15,23 @@ type InputProps = TextInputProps & {
   error?: string;
 };
 
-export function Input({ label, error, style, ...rest }: InputProps) {
+export function Input({
+  label,
+  error,
+  style,
+  onFocus,
+  onBlur,
+  ...rest
+}: InputProps) {
   const colorScheme = useColorScheme() ?? "light";
   const colors = Colors[colorScheme];
+  const [isFocused, setIsFocused] = useState(false);
+
+  const getBorderColor = () => {
+    if (error) return colors.error;
+    if (isFocused) return colors.primary;
+    return colors.border;
+  };
 
   return (
     <View style={styles.container}>
@@ -28,13 +43,24 @@ export function Input({ label, error, style, ...rest }: InputProps) {
           styles.input,
           {
             backgroundColor: colors.inputBackground,
-            borderColor: error ? colors.error : colors.border,
+            borderColor: getBorderColor(),
+            borderWidth: isFocused ? 2 : 1,
             color: colors.text,
+            shadowColor: colors.shadowColor,
           },
+          Shadows.small,
           style,
         ]}
         placeholderTextColor={colors.placeholder}
         autoCapitalize="none"
+        onFocus={(e) => {
+          setIsFocused(true);
+          onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setIsFocused(false);
+          onBlur?.(e);
+        }}
         {...rest}
       />
       {error && (
@@ -48,20 +74,21 @@ export function Input({ label, error, style, ...rest }: InputProps) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: 6,
+    gap: 8,
   },
   label: {
     fontSize: 14,
     fontWeight: "600",
+    marginLeft: 4,
   },
   input: {
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    borderRadius: BorderRadius.large,
+    paddingHorizontal: 18,
+    paddingVertical: 14,
     fontSize: 16,
   },
   error: {
     fontSize: 13,
+    marginLeft: 4,
   },
 });

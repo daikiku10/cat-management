@@ -1,53 +1,127 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * nani.now inspired theme - Yellow primary with sky blue gradients
  */
 
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+// Primary colors
+const primaryYellow = "#ffcf51";
+const primaryYellowDark = "#e6b84a";
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    // Primary
+    primary: primaryYellow,
+    primaryDark: primaryYellowDark,
+
+    // Text
+    text: "#11181C",
+    textSecondary: "#687076",
+
+    // Backgrounds
+    background: "#f8fbff",
+    card: "#ffffff",
+
+    // Gradient colors
+    gradientStart: "#6fcdff",
+    gradientEnd: "#dca4ff",
+    skyBlue: "#87CEEB",
+    skyBlueDark: "#7EC8E3",
+
+    // UI
+    tint: primaryYellow,
+    icon: "#687076",
+    tabIconDefault: "#687076",
+    tabIconSelected: primaryYellow,
+    border: "#E5E8EB",
+    error: "#DC2626",
+    inputBackground: "#ffffff",
+    placeholder: "#9BA1A6",
+
+    // Shadow
+    shadowColor: "#000000",
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    // Primary
+    primary: primaryYellow,
+    primaryDark: primaryYellowDark,
+
+    // Text
+    text: "#ECEDEE",
+    textSecondary: "#9BA1A6",
+
+    // Backgrounds
+    background: "#0d1117",
+    card: "#1E2022",
+
+    // Gradient colors
+    gradientStart: "#4a90a4",
+    gradientEnd: "#8b6b9c",
+    skyBlue: "#1a3a4a",
+    skyBlueDark: "#152d3a",
+
+    // UI
+    tint: primaryYellow,
+    icon: "#9BA1A6",
+    tabIconDefault: "#9BA1A6",
+    tabIconSelected: primaryYellow,
+    border: "#3A3F44",
+    error: "#EF4444",
+    inputBackground: "#1E2022",
+    placeholder: "#687076",
+
+    // Shadow
+    shadowColor: "#000000",
   },
+};
+
+export const Shadows = {
+  small: {
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  medium: {
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  large: {
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+};
+
+export const BorderRadius = {
+  small: 8,
+  medium: 12,
+  large: 16,
+  xl: 24,
+  full: 9999,
 };
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
+    sans: "system-ui",
+    serif: "ui-serif",
+    rounded: "ui-rounded",
+    mono: "ui-monospace",
   },
   default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
+    sans: "normal",
+    serif: "serif",
+    rounded: "normal",
+    mono: "monospace",
   },
   web: {
     sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
+    rounded:
+      "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
   },
 });
