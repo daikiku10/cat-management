@@ -1,7 +1,8 @@
 import type { Context, Next } from "hono";
 import jwt from "jsonwebtoken";
+import type { HonoEnv } from "@/lib/types";
 
-export async function requireAuth(c: Context, next: Next) {
+export async function requireAuth(c: Context<HonoEnv>, next: Next) {
   const authHeader = c.req.header("Authorization");
 
   if (!authHeader?.startsWith("Bearer ")) {
