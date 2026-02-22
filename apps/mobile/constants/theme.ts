@@ -2,10 +2,8 @@
  * nani.now inspired theme - Yellow primary with sky blue gradients
  */
 
-import { Platform } from "react-native";
-
 // Primary colors
-const primaryYellow = "#ffcf51";
+const primaryYellow = "#f5d397";
 const primaryYellowDark = "#e6b84a";
 
 export const Colors = {
@@ -23,8 +21,8 @@ export const Colors = {
     card: "#ffffff",
 
     // Gradient colors
-    gradientStart: "#6fcdff",
-    gradientEnd: "#dca4ff",
+    gradientStart: "#f5deb3",
+    gradientEnd: "#f5d162",
     skyBlue: "#87CEEB",
     skyBlueDark: "#7EC8E3",
 
@@ -104,24 +102,8 @@ export const BorderRadius = {
   full: 9999,
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    sans: "system-ui",
-    serif: "ui-serif",
-    rounded: "ui-rounded",
-    mono: "ui-monospace",
-  },
-  default: {
-    sans: "normal",
-    serif: "serif",
-    rounded: "normal",
-    mono: "monospace",
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded:
-      "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});
+export const Fonts = {
+  regular: "NotoSansJP_400Regular",
+  medium: "NotoSansJP_500Medium",
+  bold: "NotoSansJP_700Bold",
+};

@@ -9,21 +9,23 @@ type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof Materia
 type IconSymbolName = keyof typeof MAPPING;
 
 /**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
+ * SF Symbols と Material Icons のマッピングをここに追加してください。
+ * - Material Icons は [Icons Directory](https://icons.expo.fyi) で確認できます。
+ * - SF Symbols は [SF Symbols](https://developer.apple.com/sf-symbols/) アプリで確認できます。
  */
 const MAPPING = {
   'house.fill': 'home',
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'pawprint.fill': 'pets',
+  'rectangle.portrait.and.arrow.right': 'logout',
 } as IconMapping;
 
 /**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
+ * iOS では SF Symbols、Android・Web では Material Icons を使用するアイコンコンポーネント。
+ * プラットフォーム間で統一された見た目と最適なリソース使用を実現します。
+ * アイコンの `name` は SF Symbols に基づいており、Material Icons への手動マッピングが必要です。
  */
 export function IconSymbol({
   name,

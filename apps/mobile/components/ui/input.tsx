@@ -7,7 +7,7 @@ import {
 } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
-import { Colors, Shadows, BorderRadius } from "@/constants/theme";
+import { Colors, Shadows, BorderRadius, Fonts } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
 type InputProps = TextInputProps & {
@@ -47,6 +47,7 @@ export function Input({
             borderWidth: isFocused ? 2 : 1,
             color: colors.text,
             shadowColor: colors.shadowColor,
+            fontFamily: Fonts.regular,
           },
           Shadows.small,
           style,

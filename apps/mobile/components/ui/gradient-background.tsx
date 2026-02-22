@@ -7,21 +7,16 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 type GradientBackgroundProps = {
   style?: ViewStyle;
   children?: React.ReactNode;
-  variant?: "sky" | "accent";
 };
 
 export function GradientBackground({
   style,
   children,
-  variant = "sky",
 }: GradientBackgroundProps) {
   const colorScheme = useColorScheme() ?? "light";
   const colors = Colors[colorScheme];
 
-  const gradientColors =
-    variant === "sky"
-      ? ([colors.skyBlue, colors.skyBlueDark] as const)
-      : ([colors.gradientStart, colors.gradientEnd] as const);
+  const gradientColors = [colors.gradientStart, colors.gradientEnd] as const;
 
   return (
     <LinearGradient

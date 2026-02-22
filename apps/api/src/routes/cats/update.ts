@@ -20,7 +20,7 @@ update.patch("/:id", async (c) => {
         error: "Invalid request",
         issues: parsed.issues,
       },
-      400
+      400,
     );
   }
 
