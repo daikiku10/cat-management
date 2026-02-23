@@ -24,16 +24,20 @@ export function ThemedText({
   return (
     <Text
       style={[
-        { color },
+        { color, fontFamily: Fonts.regular },
         type === "default" ? styles.default : undefined,
         type === "title"
-          ? [styles.title, { fontFamily: Fonts?.rounded }]
+          ? [styles.title, { fontFamily: Fonts.bold }]
           : undefined,
-        type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
+        type === "defaultSemiBold"
+          ? [styles.defaultSemiBold, { fontFamily: Fonts.medium }]
+          : undefined,
         type === "subtitle"
-          ? [styles.subtitle, { fontFamily: Fonts?.rounded }]
+          ? [styles.subtitle, { fontFamily: Fonts.bold }]
           : undefined,
-        type === "link" ? [styles.link, { color: colors.primary }] : undefined,
+        type === "link"
+          ? [styles.link, { color: colors.primary, fontFamily: Fonts.medium }]
+          : undefined,
         style,
       ]}
       {...rest}
