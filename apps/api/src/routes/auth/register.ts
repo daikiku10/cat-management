@@ -7,21 +7,11 @@ import { vValidator } from "@hono/valibot-validator";
 import { validationHook } from "@/lib/validators";
 import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
-import { eq } from "drizzle-orm";
 
 const register = new Hono();
 
 register.post("/", vValidator("json", registerSchema, validationHook), async (c) => {
   const { email, password } = c.req.valid("json");
-
-  const existing = await db.query.users.findFirst({
-    where: eq(users.email, email),
-    columns: { id: true },
-  });
-
-  if (existing) {
-    throw new HTTPException(409, { message: "このメールアドレスはすでに使用されています" });
-  }
 
   const passwordHash = await bcrypt.hash(password, 10);
 
