@@ -15,7 +15,7 @@ detail.get("/:id", async (c) => {
   });
 
   if (!cat) {
-    return c.json({ error: "Cat not found" }, 404);
+    return c.json({ error: "猫が見つかりません" }, 404);
   }
 
   return c.json(cat);

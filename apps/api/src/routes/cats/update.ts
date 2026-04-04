@@ -13,16 +13,8 @@ update.patch("/:id", vValidator("json", updateCatSchema), async (c) => {
   const id = c.req.param("id");
   const body = c.req.valid("json");
 
-  const existing = await db.query.cats.findFirst({
-    where: and(eq(cats.id, id), eq(cats.ownerId, userId)),
-  });
-
-  if (!existing) {
-    return c.json({ error: "Cat not found" }, 404);
-  }
-
   try {
-    const updated = await db
+    const [updated] = await db
       .update(cats)
       .set({
         ...body,
@@ -31,10 +23,14 @@ update.patch("/:id", vValidator("json", updateCatSchema), async (c) => {
       .where(and(eq(cats.id, id), eq(cats.ownerId, userId)))
       .returning();
 
-    return c.json(updated[0]);
+    if (!updated) {
+      return c.json({ error: "猫が見つかりません" }, 404);
+    }
+
+    return c.json(updated);
   } catch (error) {
-    console.error("Failed to update cat:", error);
-    return c.json({ error: "Failed to update cat" }, 500);
+    console.error("猫の更新に失敗しました:", error);
+    return c.json({ error: "猫の更新に失敗しました" }, 500);
   }
 });
 

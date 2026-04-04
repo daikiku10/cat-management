@@ -5,11 +5,21 @@ import { Hono } from "hono";
 import { vValidator } from "@hono/valibot-validator";
 import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
+import { eq } from "drizzle-orm";
 
 const register = new Hono();
 
 register.post("/", vValidator("json", registerSchema), async (c) => {
   const { email, password } = c.req.valid("json");
+
+  const existing = await db.query.users.findFirst({
+    where: eq(users.email, email),
+    columns: { id: true },
+  });
+
+  if (existing) {
+    return c.json({ error: "このメールアドレスはすでに使用されています" }, 409);
+  }
 
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -21,14 +31,14 @@ register.post("/", vValidator("json", registerSchema), async (c) => {
       createdAt: new Date(),
     });
 
-    return c.json({ ok: true });
+    return c.json({ ok: true }, 201);
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
     if (message.includes("UNIQUE constraint failed")) {
-      return c.json({ error: "Email already in use" }, 409);
+      return c.json({ error: "このメールアドレスはすでに使用されています" }, 409);
     }
-    console.error("Failed to register:", error);
-    return c.json({ error: "Failed to register" }, 500);
+    console.error("登録に失敗しました:", error);
+    return c.json({ error: "登録に失敗しました" }, 500);
   }
 });
 

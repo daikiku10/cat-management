@@ -6,14 +6,14 @@ export async function requireAuth(c: Context<HonoEnv>, next: Next) {
   const authHeader = c.req.header("Authorization");
 
   if (!authHeader?.startsWith("Bearer ")) {
-    return c.json({ error: "Unauthorized" }, 401);
+    return c.json({ error: "認証が必要です" }, 401);
   }
 
   const token = authHeader.substring(7);
 
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    return c.json({ error: "Internal server error" }, 500);
+    return c.json({ error: "サーバーエラーが発生しました" }, 500);
   }
 
   try {
@@ -21,11 +21,11 @@ export async function requireAuth(c: Context<HonoEnv>, next: Next) {
       userId: string;
     };
     if (typeof payload.userId !== "string") {
-      return c.json({ error: "Invalid token" }, 401);
+      return c.json({ error: "無効なトークンです" }, 401);
     }
     c.set("userId", payload.userId);
     await next();
   } catch {
-    return c.json({ error: "Invalid token" }, 401);
+    return c.json({ error: "無効なトークンです" }, 401);
   }
 }

@@ -12,6 +12,12 @@ export const createCatSchema = v.object({
 
 export type CreateCatInput = v.InferInput<typeof createCatSchema>;
 
-export const updateCatSchema = v.partial(createCatSchema);
+export const updateCatSchema = v.pipe(
+  v.partial(createCatSchema),
+  v.check(
+    (data) => Object.values(data).some((val) => val !== undefined),
+    "少なくとも1つのフィールドを指定してください"
+  )
+);
 
 export type UpdateCatInput = v.InferInput<typeof updateCatSchema>;

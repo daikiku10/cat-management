@@ -10,23 +10,20 @@ deleteCat.delete("/:id", async (c) => {
   const userId = c.get("userId");
   const id = c.req.param("id");
 
-  const existing = await db.query.cats.findFirst({
-    where: and(eq(cats.id, id), eq(cats.ownerId, userId)),
-  });
-
-  if (!existing) {
-    return c.json({ error: "Cat not found" }, 404);
-  }
-
   try {
-    await db
+    const [deleted] = await db
       .delete(cats)
-      .where(and(eq(cats.id, id), eq(cats.ownerId, userId)));
+      .where(and(eq(cats.id, id), eq(cats.ownerId, userId)))
+      .returning();
+
+    if (!deleted) {
+      return c.json({ error: "猫が見つかりません" }, 404);
+    }
 
     return c.body(null, 204);
   } catch (error) {
-    console.error("Failed to delete cat:", error);
-    return c.json({ error: "Failed to delete cat" }, 500);
+    console.error("猫の削除に失敗しました:", error);
+    return c.json({ error: "猫の削除に失敗しました" }, 500);
   }
 });
 
