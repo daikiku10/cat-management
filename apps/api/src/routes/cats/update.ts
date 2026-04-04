@@ -3,26 +3,15 @@ import { updateCatSchema } from "@/lib/validators/cat";
 import { cats } from "@repo/db";
 import { eq, and } from "drizzle-orm";
 import { Hono } from "hono";
+import { vValidator } from "@hono/valibot-validator";
 import type { HonoEnv } from "@/lib/types";
-import * as v from "valibot";
 
 const update = new Hono<HonoEnv>();
 
-update.patch("/:id", async (c) => {
+update.patch("/:id", vValidator("json", updateCatSchema), async (c) => {
   const userId = c.get("userId");
   const id = c.req.param("id");
-  const body = await c.req.json();
-
-  const parsed = v.safeParse(updateCatSchema, body);
-  if (!parsed.success) {
-    return c.json(
-      {
-        error: "Invalid request",
-        issues: parsed.issues,
-      },
-      400,
-    );
-  }
+  const body = c.req.valid("json");
 
   const existing = await db.query.cats.findFirst({
     where: and(eq(cats.id, id), eq(cats.ownerId, userId)),
@@ -36,7 +25,7 @@ update.patch("/:id", async (c) => {
     const updated = await db
       .update(cats)
       .set({
-        ...parsed.output,
+        ...body,
         updatedAt: new Date(),
       })
       .where(and(eq(cats.id, id), eq(cats.ownerId, userId)))

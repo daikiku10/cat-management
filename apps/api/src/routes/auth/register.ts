@@ -2,38 +2,34 @@ import { db } from "@/db";
 import { registerSchema } from "@/lib/validators/auth";
 import { users } from "@repo/db";
 import { Hono } from "hono";
-import * as v from "valibot";
+import { vValidator } from "@hono/valibot-validator";
 import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
 
 const register = new Hono();
 
-register.post("/", async (c) => {
-  const body = await c.req.json();
-
-  const parsed = v.safeParse(registerSchema, body);
-  if (!parsed.success) {
-    return c.json(
-      {
-        error: "Invalid request",
-        issues: parsed.issues,
-      },
-      400,
-    );
-  }
-
-  const { email, password } = parsed.output;
+register.post("/", vValidator("json", registerSchema), async (c) => {
+  const { email, password } = c.req.valid("json");
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  await db.insert(users).values({
-    id: nanoid(),
-    email,
-    passwordHash,
-    createdAt: new Date(),
-  });
+  try {
+    await db.insert(users).values({
+      id: nanoid(),
+      email,
+      passwordHash,
+      createdAt: new Date(),
+    });
 
-  return c.json({ ok: true });
+    return c.json({ ok: true });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    if (message.includes("UNIQUE constraint failed")) {
+      return c.json({ error: "Email already in use" }, 409);
+    }
+    console.error("Failed to register:", error);
+    return c.json({ error: "Failed to register" }, 500);
+  }
 });
 
 export { register };

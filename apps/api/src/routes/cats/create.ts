@@ -2,32 +2,21 @@ import { db } from "@/db";
 import { createCatSchema } from "@/lib/validators/cat";
 import { cats } from "@repo/db";
 import { Hono } from "hono";
+import { vValidator } from "@hono/valibot-validator";
 import type { HonoEnv } from "@/lib/types";
 import { nanoid } from "nanoid";
-import * as v from "valibot";
 
 const create = new Hono<HonoEnv>();
 
-create.post("/", async (c) => {
+create.post("/", vValidator("json", createCatSchema), async (c) => {
   const userId = c.get("userId");
-  const body = await c.req.json();
-
-  const parsed = v.safeParse(createCatSchema, body);
-  if (!parsed.success) {
-    return c.json(
-      {
-        error: "Invalid request",
-        issues: parsed.issues,
-      },
-      400
-    );
-  }
+  const body = c.req.valid("json");
 
   const now = new Date();
   const cat = {
     id: nanoid(),
     ownerId: userId,
-    ...parsed.output,
+    ...body,
     createdAt: now,
     updatedAt: now,
   };
