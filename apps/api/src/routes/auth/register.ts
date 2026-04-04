@@ -2,14 +2,16 @@ import { db } from "@/db";
 import { registerSchema } from "@/lib/validators/auth";
 import { users } from "@repo/db";
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { vValidator } from "@hono/valibot-validator";
+import { validationHook } from "@/lib/validators";
 import { nanoid } from "nanoid";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 
 const register = new Hono();
 
-register.post("/", vValidator("json", registerSchema), async (c) => {
+register.post("/", vValidator("json", registerSchema, validationHook), async (c) => {
   const { email, password } = c.req.valid("json");
 
   const existing = await db.query.users.findFirst({
@@ -18,7 +20,7 @@ register.post("/", vValidator("json", registerSchema), async (c) => {
   });
 
   if (existing) {
-    return c.json({ error: "このメールアドレスはすでに使用されています" }, 409);
+    throw new HTTPException(409, { message: "このメールアドレスはすでに使用されています" });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -35,10 +37,10 @@ register.post("/", vValidator("json", registerSchema), async (c) => {
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
     if (message.includes("UNIQUE constraint failed")) {
-      return c.json({ error: "このメールアドレスはすでに使用されています" }, 409);
+      throw new HTTPException(409, { message: "このメールアドレスはすでに使用されています" });
     }
     console.error("登録に失敗しました:", error);
-    return c.json({ error: "登録に失敗しました" }, 500);
+    throw new HTTPException(500, { message: "登録に失敗しました" });
   }
 });
 

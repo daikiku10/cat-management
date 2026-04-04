@@ -3,12 +3,14 @@ import { updateCatSchema } from "@/lib/validators/cat";
 import { cats } from "@repo/db";
 import { eq, and } from "drizzle-orm";
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { vValidator } from "@hono/valibot-validator";
+import { validationHook } from "@/lib/validators";
 import type { HonoEnv } from "@/lib/types";
 
 const update = new Hono<HonoEnv>();
 
-update.patch("/:id", vValidator("json", updateCatSchema), async (c) => {
+update.patch("/:id", vValidator("json", updateCatSchema, validationHook), async (c) => {
   const userId = c.get("userId");
   const id = c.req.param("id");
   const body = c.req.valid("json");
@@ -24,13 +26,14 @@ update.patch("/:id", vValidator("json", updateCatSchema), async (c) => {
       .returning();
 
     if (!updated) {
-      return c.json({ error: "猫が見つかりません" }, 404);
+      throw new HTTPException(404, { message: "猫が見つかりません" });
     }
 
     return c.json(updated);
-  } catch (error) {
-    console.error("猫の更新に失敗しました:", error);
-    return c.json({ error: "猫の更新に失敗しました" }, 500);
+  } catch (err) {
+    if (err instanceof HTTPException) throw err;
+    console.error("猫の更新に失敗しました:", err);
+    throw new HTTPException(500, { message: "猫の更新に失敗しました" });
   }
 });
 

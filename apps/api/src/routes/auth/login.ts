@@ -2,7 +2,9 @@ import { db } from "@/db";
 import { loginSchema } from "@/lib/validators/auth";
 import { users } from "@repo/db";
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { vValidator } from "@hono/valibot-validator";
+import { validationHook } from "@/lib/validators";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
@@ -12,7 +14,7 @@ const DUMMY_HASH = "$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWq
 
 const login = new Hono();
 
-login.post("/", vValidator("json", loginSchema), async (c) => {
+login.post("/", vValidator("json", loginSchema, validationHook), async (c) => {
   const { email, password } = c.req.valid("json");
 
   const user = await db.query.users.findFirst({
@@ -23,7 +25,7 @@ login.post("/", vValidator("json", loginSchema), async (c) => {
   const isValid = await bcrypt.compare(password, passwordHash);
 
   if (!user || !isValid) {
-    return c.json({ error: "メールアドレスまたはパスワードが正しくありません" }, 401);
+    throw new HTTPException(401, { message: "メールアドレスまたはパスワードが正しくありません" });
   }
 
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
