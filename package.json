@@ -3,7 +3,7 @@
   "private": true,
   "packageManager": "pnpm@9.0.0",
   "scripts": {
-    "dev:api": "pnpm --filter api dev",
+    "dev:api": "pnpm --filter api dev || true",
     "dev:mobile": "pnpm --filter mobile start"
   }
 }
