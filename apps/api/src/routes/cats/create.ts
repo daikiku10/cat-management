@@ -15,15 +15,12 @@ create.post("/", vValidator("json", createCatSchema, validationHook), async (c) 
   const body = c.req.valid("json");
 
   try {
-    const now = new Date();
     const [cat] = await db
       .insert(cats)
       .values({
         id: nanoid(),
         ownerId: userId,
         ...body,
-        createdAt: now,
-        updatedAt: now,
       })
       .returning();
     return c.json(cat, 201);

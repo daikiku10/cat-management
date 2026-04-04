@@ -30,7 +30,6 @@ register.post("/", vValidator("json", registerSchema, validationHook), async (c)
       id: nanoid(),
       email,
       passwordHash,
-      createdAt: new Date(),
     });
 
     return c.json({ ok: true }, 201);

@@ -20,7 +20,6 @@ update.patch("/:id", vValidator("json", updateCatSchema, validationHook), async 
       .update(cats)
       .set({
         ...body,
-        updatedAt: new Date(),
       })
       .where(and(eq(cats.id, id), eq(cats.ownerId, userId)))
       .returning();
