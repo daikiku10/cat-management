@@ -3,13 +3,13 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --port 3000",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "android": "expo start --android --port 3000",
+    "ios": "expo start --ios --port 3000",
+    "web": "expo start --web --port 3000",
     "lint": "expo lint",
-    "dev": "expo start"
+    "dev": "expo start --port 3000"
   },
   "dependencies": {
     "@expo-google-fonts/noto-sans-jp": "^0.4.3",
