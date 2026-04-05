@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
 import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
@@ -18,6 +19,12 @@ const app = new Hono().basePath("/api");
 
 app.use(logger());
 app.use(secureHeaders());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN?.split(",") ?? ["http://localhost:8081"],
+    credentials: true,
+  })
+);
 
 app.onError((err, c) => {
   if (err instanceof HTTPException) {
