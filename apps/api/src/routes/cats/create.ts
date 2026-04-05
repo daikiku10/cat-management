@@ -23,6 +23,11 @@ create.post("/", vValidator("json", createCatSchema, validationHook), async (c) 
         ...body,
       })
       .returning();
+
+    if (!cat) {
+      throw new HTTPException(500, { message: "猫の作成に失敗しました" });
+    }
+
     return c.json(cat, 201);
   } catch (error) {
     console.error("猫の作成に失敗しました:", error);

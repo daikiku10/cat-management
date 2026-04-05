@@ -21,3 +21,13 @@ export const updateCatSchema = v.pipe(
 );
 
 export type UpdateCatInput = v.InferInput<typeof updateCatSchema>;
+
+// nanoid のデフォルト長は 21 文字、許可文字は A-Za-z0-9_-
+export const catIdParamSchema = v.object({
+  id: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(30),
+    v.regex(/^[A-Za-z0-9_-]+$/, "無効なIDフォーマットです")
+  ),
+});
