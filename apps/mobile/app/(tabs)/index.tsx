@@ -1,98 +1,162 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useState, useCallback } from "react";
+import {
+  StyleSheet,
+  FlatList,
+  RefreshControl,
+  View,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
+import { useFocusEffect, router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { ThemedView } from "@/components/themed-view";
+import { ThemedText } from "@/components/themed-text";
+import { CatCard } from "@/components/cats/cat-card";
+import { Colors, Shadows, BorderRadius } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { getCatsApi, type Cat } from "@/lib/api/cats";
 
-export default function HomeScreen() {
+export default function CatsScreen() {
+  const colorScheme = useColorScheme() ?? "light";
+  const colors = Colors[colorScheme];
+
+  const [cats, setCats] = useState<Cat[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [total, setTotal] = useState(0);
+
+  const fetchCats = useCallback(async (refresh = false) => {
+    if (refresh) setRefreshing(true);
+    else setLoading(true);
+
+    try {
+      const result = await getCatsApi(20, 0);
+      setCats(result.cats);
+      setTotal(result.total);
+    } catch {
+      // Handle error silently
+    }
+
+    if (refresh) setRefreshing(false);
+    else setLoading(false);
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchCats();
+    }, [fetchCats]),
+  );
+
+  const handleRefresh = () => fetchCats(true);
+
+  const handleCatPress = (cat: Cat) => {
+    router.push(`/cats/${cat.id}`);
+  };
+
+  const handleAddPress = () => {
+    router.push("/cats/create");
+  };
+
+  if (loading) {
+    return (
+      <ThemedView style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </ThemedView>
+    );
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <ThemedView style={styles.container}>
+      <FlatList
+        data={cats}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <CatCard cat={item} onPress={() => handleCatPress(item)} />
+        )}
+        contentContainerStyle={styles.list}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            tintColor={colors.primary}
+          />
+        }
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            <ThemedText style={styles.emptyText}>🐾</ThemedText>
+            <ThemedText type="subtitle">まだ猫がいません</ThemedText>
+            <ThemedText style={styles.emptyHint}>
+              右下のボタンから猫を登録しましょう
+            </ThemedText>
+          </View>
+        }
+        ListHeaderComponent={
+          total > 0 ? (
+            <ThemedText style={styles.header}>{total}匹の猫</ThemedText>
+          ) : null
+        }
+      />
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <Pressable
+        onPress={handleAddPress}
+        style={(state) => [
+          styles.fab,
+          {
+            backgroundColor: colors.primary,
+            shadowColor: colors.shadowColor,
+            transform: [{ scale: state.pressed ? 0.95 : 1 }],
+          },
+          Shadows.large,
+        ]}
+      >
+        <Ionicons name="add" size={28} color="#fff" />
+      </Pressable>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  list: {
+    paddingVertical: 8,
+    paddingBottom: 100,
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    fontSize: 14,
+    opacity: 0.6,
+  },
+  empty: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 100,
+  },
+  emptyText: {
+    fontSize: 64,
+    marginBottom: 16,
+  },
+  emptyHint: {
+    marginTop: 8,
+    opacity: 0.6,
+  },
+  fab: {
+    position: "absolute",
+    right: 20,
+    bottom: 20,
+    width: 56,
+    height: 56,
+    borderRadius: BorderRadius.full,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
