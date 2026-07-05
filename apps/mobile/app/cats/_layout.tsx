@@ -7,14 +7,14 @@ export default function CatsLayout() {
       <Stack.Screen
         name="create"
         options={{
-          title: "猫を登録",
+          headerShown: false,
           presentation: "modal",
         }}
       />
       <Stack.Screen
         name="edit/[id]"
         options={{
-          title: "編集",
+          headerShown: false,
           presentation: "modal",
         }}
       />
