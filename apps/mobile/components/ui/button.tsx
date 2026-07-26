@@ -52,7 +52,6 @@ export function Button({
         {
           backgroundColor: getBackgroundColor(),
           opacity: isDisabled ? 0.5 : 1,
-          shadowColor: colors.shadowColor,
           transform: [{ scale: state.pressed ? 0.97 : 1 }],
         },
         getBorderStyle(),

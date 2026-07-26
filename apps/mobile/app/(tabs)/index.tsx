@@ -102,7 +102,6 @@ export default function CatsScreen() {
           styles.fab,
           {
             backgroundColor: colors.primary,
-            shadowColor: colors.shadowColor,
             transform: [{ scale: state.pressed ? 0.95 : 1 }],
           },
           Shadows.large,

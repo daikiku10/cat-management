@@ -144,7 +144,7 @@ export default function CatDetailScreen() {
             <View
               style={[
                 styles.card,
-                { backgroundColor: colors.card, shadowColor: colors.shadowColor },
+                { backgroundColor: colors.card },
                 Shadows.medium,
               ]}
             >

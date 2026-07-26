@@ -60,10 +60,7 @@ export default function RegisterScreen() {
         <View
           style={[
             styles.card,
-            {
-              backgroundColor: colors.card,
-              shadowColor: colors.shadowColor,
-            },
+            { backgroundColor: colors.card },
             Shadows.large,
           ]}
         >

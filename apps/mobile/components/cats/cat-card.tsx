@@ -25,7 +25,6 @@ export function CatCard({ cat, onPress }: CatCardProps) {
         styles.card,
         {
           backgroundColor: colors.card,
-          shadowColor: colors.shadowColor,
           transform: [{ scale: state.pressed ? 0.98 : 1 }],
         },
         Shadows.medium,

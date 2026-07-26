@@ -46,7 +46,6 @@ export function Input({
             borderColor: getBorderColor(),
             borderWidth: isFocused ? 2 : 1,
             color: colors.text,
-            shadowColor: colors.shadowColor,
             fontFamily: Fonts.regular,
           },
           Shadows.small,

@@ -35,9 +35,6 @@ export const Colors = {
     error: "#DC2626",
     inputBackground: "#ffffff",
     placeholder: "#9BA1A6",
-
-    // Shadow
-    shadowColor: "#000000",
   },
   dark: {
     // Primary
@@ -67,30 +64,18 @@ export const Colors = {
     error: "#EF4444",
     inputBackground: "#1E2022",
     placeholder: "#687076",
-
-    // Shadow
-    shadowColor: "#000000",
   },
 };
 
 export const Shadows = {
   small: {
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
+    boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
   },
   medium: {
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
   },
   large: {
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 5,
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.15)",
   },
 };
 
