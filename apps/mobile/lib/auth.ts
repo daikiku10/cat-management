@@ -13,8 +13,3 @@ export async function getToken(): Promise<string | null> {
 export async function logout(): Promise<void> {
   await SecureStore.deleteItemAsync(TOKEN_KEY);
 }
-
-export async function isAuthenticated(): Promise<boolean> {
-  const token = await getToken();
-  return token !== null;
-}
