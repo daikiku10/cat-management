@@ -4,6 +4,9 @@
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "dev:api": "pnpm --filter api dev || true",
-    "dev:mobile": "pnpm --filter mobile start"
+    "dev:mobile": "pnpm --filter mobile start",
+    "lint:api": "pnpm --filter api lint",
+    "lint:mobile": "pnpm --filter mobile lint",
+    "lint:db": "pnpm --filter @repo/db lint"
   }
 }

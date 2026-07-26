@@ -8,7 +8,7 @@
     "android": "expo start --android --port 3000",
     "ios": "expo start --ios --port 3000",
     "web": "expo start --web --port 3000",
-    "lint": "expo lint",
+    "lint": "oxlint",
     "dev": "expo start --port 3000",
     "doctor": "npx react-doctor@latest --verbose"
   },
@@ -45,8 +45,8 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
-    "eslint": "^9.25.0",
-    "eslint-config-expo": "~10.0.0",
+    "eslint-plugin-expo": "1.0.0",
+    "oxlint": "^1.75.0",
     "typescript": "~5.9.2"
   },
   "private": true
