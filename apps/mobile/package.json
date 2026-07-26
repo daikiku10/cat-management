@@ -9,6 +9,7 @@
     "ios": "expo start --ios --port 3000",
     "web": "expo start --web --port 3000",
     "lint": "oxlint",
+    "typecheck": "tsc --noEmit",
     "dev": "expo start --port 3000",
     "doctor": "npx react-doctor@latest --verbose"
   },
