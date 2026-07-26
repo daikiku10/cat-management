@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, use, useEffect, useState } from "react";
 
 import { saveToken, getToken, logout as removeToken } from "@/lib/auth";
 import { loginApi, registerApi, logoutApi } from "@/lib/api/auth";
@@ -36,24 +30,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuth();
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = async (email: string, password: string) => {
     const { token } = await loginApi(email, password);
     await saveToken(token);
     setState({ isAuthenticated: true, isLoading: false });
-  }, []);
+  };
 
-  const register = useCallback(async (email: string, password: string) => {
+  const register = async (email: string, password: string) => {
     await registerApi(email, password);
     const { token } = await loginApi(email, password);
     await saveToken(token);
     setState({ isAuthenticated: true, isLoading: false });
-  }, []);
+  };
 
-  const logout = useCallback(async () => {
+  const logout = async () => {
     await logoutApi().catch(() => {});
     await removeToken();
     setState({ isAuthenticated: false, isLoading: false });
-  }, []);
+  };
 
   return (
     <AuthContext.Provider value={{ ...state, login, register, logout }}>
@@ -63,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAuth(): AuthContextValue {
-  const context = useContext(AuthContext);
+  const context = use(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }

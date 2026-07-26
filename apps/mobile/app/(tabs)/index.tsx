@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   FlatList,
@@ -26,7 +26,7 @@ export default function CatsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [total, setTotal] = useState(0);
 
-  const fetchCats = useCallback(async (refresh = false) => {
+  const fetchCats = async (refresh = false) => {
     if (refresh) setRefreshing(true);
     else setLoading(true);
 
@@ -40,13 +40,11 @@ export default function CatsScreen() {
 
     if (refresh) setRefreshing(false);
     else setLoading(false);
-  }, []);
+  };
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchCats();
-    }, [fetchCats]),
-  );
+  useFocusEffect(() => {
+    fetchCats();
+  });
 
   const handleRefresh = () => fetchCats(true);
 

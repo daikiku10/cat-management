@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -30,28 +30,26 @@ export default function CatDetailScreen() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      async function fetchCat() {
-        setLoading(true);
-        try {
-          const result = await getCatApi(id);
-          setCat(result);
-        } catch {
-          Alert.alert("エラー", "猫の情報を取得できませんでした");
-          router.back();
-        }
-        setLoading(false);
+  useFocusEffect(() => {
+    async function fetchCat() {
+      setLoading(true);
+      try {
+        const result = await getCatApi(id);
+        setCat(result);
+      } catch {
+        Alert.alert("エラー", "猫の情報を取得できませんでした");
+        router.back();
       }
-      fetchCat();
-    }, [id])
-  );
+      setLoading(false);
+    }
+    fetchCat();
+  });
 
-  const handleEdit = useCallback(() => {
+  const handleEdit = () => {
     router.push(`/cats/edit/${id}`);
-  }, [id]);
+  };
 
-  const handleDelete = useCallback(() => {
+  const handleDelete = () => {
     Alert.alert(
       "削除確認",
       `${cat?.name}を削除しますか？`,
@@ -73,9 +71,9 @@ export default function CatDetailScreen() {
         },
       ]
     );
-  }, [cat?.name, id]);
+  };
 
-  const showMenu = useCallback(() => {
+  const showMenu = () => {
     if (Platform.OS === "ios") {
       ActionSheetIOS.showActionSheetWithOptions(
         {
@@ -95,7 +93,7 @@ export default function CatDetailScreen() {
         { text: "キャンセル", style: "cancel" },
       ]);
     }
-  }, [handleEdit, handleDelete]);
+  };
 
   const genderLabel = cat
     ? cat.gender === "male" ? "♂ オス" : cat.gender === "female" ? "♀ メス" : "不明"
