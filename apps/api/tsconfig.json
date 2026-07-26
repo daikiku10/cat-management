@@ -6,16 +6,16 @@
     "skipLibCheck": true,
     "strict": true,
     "esModuleInterop": true,
-    "module": "CommonJS",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "outDir": "./dist",
+    "rootDir": "./src",
     "paths": {
-      "@/*": ["./src/*"],
-      "@repo/db": ["../../packages/db/src/index.ts"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.mts"],
+  "include": ["src/**/*.ts", "src/**/*.mts"],
   "exclude": ["node_modules", "dist"]
 }
