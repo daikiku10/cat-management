@@ -1,11 +1,13 @@
 import { apiClient } from "./client";
+import type { Breed } from "./breeds";
 
 export type Cat = {
   id: string;
   ownerId: string;
   name: string;
   age?: number | null;
-  breed?: string | null;
+  breedId?: string | null;
+  breed?: Breed | null;
   photo?: string | null;
   weight?: number | null;
   gender?: "male" | "female" | "unknown" | null;
@@ -17,7 +19,7 @@ export type Cat = {
 export type CreateCatInput = {
   name: string;
   age?: number;
-  breed?: string;
+  breedId?: string;
   photo?: string;
   weight?: number;
   gender?: "male" | "female" | "unknown";

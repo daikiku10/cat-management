@@ -10,7 +10,8 @@
     "lint": "oxlint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +23,10 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "dotenv": "^16.5.0",
     "drizzle-kit": "^0.31.8",
     "oxlint": "^1.75.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }

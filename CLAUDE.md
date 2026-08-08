@@ -34,6 +34,7 @@ cd apps/api && pnpm build
 cd packages/db && pnpm db:generate   # スキーマ変更からマイグレーション生成
 cd packages/db && pnpm db:migrate    # マイグレーション適用
 cd packages/db && pnpm db:studio     # Drizzle Studio 起動
+cd packages/db && pnpm db:seed       # 猫種マスタ(breeds)のシード投入
 ```
 
 ## アーキテクチャ

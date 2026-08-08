@@ -44,7 +44,7 @@ export function CatCard({ cat, onPress }: CatCardProps) {
           {cat.name} {genderLabel}
         </ThemedText>
         {cat.breed && (
-          <ThemedText style={styles.breed}>{cat.breed}</ThemedText>
+          <ThemedText style={styles.breed}>{cat.breed.name}</ThemedText>
         )}
         <View style={styles.details}>
           {cat.age !== null && cat.age !== undefined && (

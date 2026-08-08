@@ -153,7 +153,7 @@ export default function CatDetailScreen() {
               </ThemedText>
 
               <View style={styles.infoGrid}>
-                <InfoItem label="品種" value={cat.breed || "未設定"} />
+                <InfoItem label="品種" value={cat.breed?.name || "未設定"} />
                 <InfoItem label="年齢" value={cat.age ? `${cat.age}歳` : "未設定"} />
                 <InfoItem label="性別" value={genderLabel} />
                 <InfoItem
