@@ -14,6 +14,7 @@ for (const key of requiredEnvVars) {
   }
 }
 
+// push権限テスト用コメント
 const app = new Hono().basePath("/api");
 
 app.use(logger());
