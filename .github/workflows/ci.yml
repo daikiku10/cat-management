@@ -48,3 +48,37 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @repo/db lint
       - run: pnpm --filter @repo/db build
+
+  fallow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Run fallow audit
+        id: fallow
+        run: |
+          pnpm run lint:fallow | tee fallow-results.json
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Display fallow report
+        if: always()
+        run: |
+          if [ -f fallow-results.json ]; then
+            echo "## Fallow Code Quality Report" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            pnpm exec fallow report --from fallow-results.json >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "Results:" >> $GITHUB_STEP_SUMMARY
+            cat fallow-results.json >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check fallow result
+        if: steps.fallow.outputs.exit_code != '0'
+        run: exit 1

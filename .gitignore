@@ -1,5 +1,9 @@
 node_modules
 .env
-.claude
+.claude/settings.local.json
 scripts
 issue-plan.md
+
+# Fallow temporary files
+fallow-results.json
+.fallow/cache/
