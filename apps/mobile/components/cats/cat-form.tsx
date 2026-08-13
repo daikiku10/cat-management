@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,8 @@ import { ThemedText } from "@/components/themed-text";
 import { Colors, BorderRadius } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import type { CreateCatInput, Cat } from "@/lib/api/cats";
+import type { Breed } from "@/lib/api/breeds";
+import { BreedPicker } from "@/components/cats/breed-picker";
 
 type CatFormProps = {
   initialData?: Cat;
@@ -22,7 +25,8 @@ export function CatForm({ initialData, onSubmit, submitLabel }: CatFormProps) {
 
   const [name, setName] = useState(initialData?.name ?? "");
   const [age, setAge] = useState(initialData?.age?.toString() ?? "");
-  const [breed, setBreed] = useState(initialData?.breed ?? "");
+  const [breed, setBreed] = useState<Breed | null>(initialData?.breed ?? null);
+  const [pickerVisible, setPickerVisible] = useState(false);
   const [photo, setPhoto] = useState(initialData?.photo ?? "");
   const [weight, setWeight] = useState(initialData?.weight?.toString() ?? "");
   const [gender, setGender] = useState<Gender | undefined>(
@@ -49,7 +53,7 @@ export function CatForm({ initialData, onSubmit, submitLabel }: CatFormProps) {
       const parsed = parseInt(age, 10);
       if (!isNaN(parsed)) data.age = parsed;
     }
-    if (breed) data.breed = breed.trim();
+    if (breed) data.breedId = breed.id;
     if (photo) data.photo = photo.trim();
     if (weight) {
       const parsed = parseFloat(weight);
@@ -95,11 +99,30 @@ export function CatForm({ initialData, onSubmit, submitLabel }: CatFormProps) {
         keyboardType="number-pad"
       />
 
-      <Input
-        label="品種"
-        placeholder="品種（例: スコティッシュフォールド）"
-        value={breed}
-        onChangeText={setBreed}
+      <View>
+        <ThemedText style={styles.label}>品種</ThemedText>
+        <Pressable
+          onPress={() => setPickerVisible(true)}
+          style={[
+            styles.breedSelect,
+            { backgroundColor: colors.inputBackground, borderColor: colors.border },
+          ]}
+        >
+          <ThemedText style={{ color: breed ? colors.text : colors.placeholder }}>
+            {breed ? breed.name : "品種を選択"}
+          </ThemedText>
+          <Ionicons name="chevron-forward" size={18} color={colors.icon} />
+        </Pressable>
+      </View>
+
+      <BreedPicker
+        visible={pickerVisible}
+        selectedBreedId={breed?.id}
+        onSelect={(selected) => {
+          setBreed(selected);
+          setPickerVisible(false);
+        }}
+        onClose={() => setPickerVisible(false)}
       />
 
       <View style={styles.genderSection}>
@@ -175,6 +198,15 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginLeft: 4,
     marginBottom: 8,
+  },
+  breedSelect: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderRadius: BorderRadius.large,
+    borderWidth: 1,
+    paddingHorizontal: 18,
+    paddingVertical: 14,
   },
   genderSection: {
     marginBottom: 0,

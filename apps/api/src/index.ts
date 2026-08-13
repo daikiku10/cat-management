@@ -6,6 +6,7 @@ import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
 import { authRoutes } from "@/routes/auth";
 import { catRoutes } from "@/routes/cats";
+import { breedRoutes } from "@/routes/breeds";
 
 const requiredEnvVars = ["DATABASE_URL", "TORSO_TOKEN", "JWT_SECRET"] as const;
 for (const key of requiredEnvVars) {
@@ -29,6 +30,7 @@ app.onError((err, c) => {
 
 app.route("/auth", authRoutes);
 app.route("/cats", catRoutes);
+app.route("/breeds", breedRoutes);
 
 serve({
   fetch: app.fetch,

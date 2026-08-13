@@ -3,7 +3,7 @@ import * as v from "valibot";
 export const createCatSchema = v.object({
   name: v.pipe(v.string(), v.minLength(1, "名前は必須です")),
   age: v.optional(v.pipe(v.number(), v.minValue(0))),
-  breed: v.optional(v.string()),
+  breedId: v.optional(v.pipe(v.string(), v.regex(/^[A-Za-z0-9_-]+$/, "無効な品種IDフォーマットです"))),
   photo: v.optional(v.pipe(v.string(), v.url())),
   weight: v.optional(v.pipe(v.number(), v.minValue(0))),
   gender: v.optional(v.picklist(["male", "female", "unknown"])),

@@ -12,13 +12,13 @@ list.get("/", async (c) => {
   const offset = Math.max(Number(c.req.query("offset")) || 0, 0);
 
   const [catList, totalResult] = await Promise.all([
-    db
-      .select()
-      .from(cats)
-      .where(eq(cats.ownerId, userId))
-      .orderBy(desc(cats.createdAt))
-      .limit(limit)
-      .offset(offset),
+    db.query.cats.findMany({
+      where: eq(cats.ownerId, userId),
+      with: { breed: true },
+      orderBy: desc(cats.createdAt),
+      limit,
+      offset,
+    }),
     db
       .select({ count: count() })
       .from(cats)

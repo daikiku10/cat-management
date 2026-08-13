@@ -16,6 +16,7 @@ detail.get("/:id", vValidator("param", catIdParamSchema, validationHook), async 
 
   const cat = await db.query.cats.findFirst({
     where: and(eq(cats.id, id), eq(cats.ownerId, userId)),
+    with: { breed: true },
   });
 
   if (!cat) {
