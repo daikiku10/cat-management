@@ -29,6 +29,13 @@
       "when": 1786232608752,
       "tag": "0003_talented_reaper",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1786600261346,
+      "tag": "0004_lethal_fantastic_four",
+      "breakpoints": true
     }
   ]
 }
