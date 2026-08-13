@@ -39,10 +39,15 @@ export const cats = sqliteTable("cats", {
     .$onUpdateFn(() => new Date()),
 });
 
+export const usersRelations = relations(users, ({ many }) => ({
+  cats: many(cats),
+}));
+
 export const breedsRelations = relations(breeds, ({ many }) => ({
   cats: many(cats),
 }));
 
 export const catsRelations = relations(cats, ({ one }) => ({
+  owner: one(users, { fields: [cats.ownerId], references: [users.id] }),
   breed: one(breeds, { fields: [cats.breedId], references: [breeds.id] }),
 }));

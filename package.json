@@ -10,7 +10,11 @@
     "lint:db": "pnpm --filter @repo/db lint",
     "typecheck:mobile": "pnpm --filter mobile typecheck",
     "lint:fallow": "fallow audit --base main --format json --quiet --fail-on-regression --tolerance 0",
-    "lint:fallow:baseline": "fallow audit --base main --format json --quiet --save-regression-baseline"
+    "lint:fallow:baseline": "fallow audit --base main --format json --quiet --save-regression-baseline",
+    "db:generate": "pnpm --filter @repo/db db:generate",
+    "db:push": "pnpm --filter @repo/db db:push",
+    "db:seed": "pnpm --filter @repo/db db:seed",
+    "db:studio": "pnpm --filter @repo/db db:studio"
   },
   "devDependencies": {
     "fallow": "^3.10.0"
