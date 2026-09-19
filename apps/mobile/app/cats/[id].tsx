@@ -12,10 +12,11 @@ import {
 import { Image } from "expo-image";
 import { useLocalSearchParams, router, useFocusEffect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ThemedView } from "@/components/themed-view";
 import { ThemedText } from "@/components/themed-text";
+import { CatBottomTabs } from "@/components/cats/cat-bottom-tabs";
+import { ScreenHeader, screenHeaderButtonStyle } from "@/components/ui/screen-header";
 import { Colors, Shadows, BorderRadius } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { getCatApi, deleteCatApi, type Cat } from "@/lib/api/cats";
@@ -24,7 +25,6 @@ export default function CatDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const colorScheme = useColorScheme() ?? "light";
   const colors = Colors[colorScheme];
-  const insets = useSafeAreaInsets();
 
   const [cat, setCat] = useState<Cat | null>(null);
   const [loading, setLoading] = useState(true);
@@ -101,25 +101,18 @@ export default function CatDetailScreen() {
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
-      {/* カスタムヘッダー */}
-      <View style={{ backgroundColor: colors.background }}>
-        <View style={{ height: insets.top }} />
-        <View style={[styles.headerBar, { backgroundColor: colors.background }]}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.headerButton}>
-            <Ionicons name="chevron-back" size={26} color={colors.text} />
-          </TouchableOpacity>
-          <ThemedText style={styles.headerTitle} numberOfLines={1}>
-            {cat?.name ?? ""}
-          </ThemedText>
-          <TouchableOpacity onPress={showMenu} style={styles.headerButton} disabled={loading}>
+      <ScreenHeader
+        title={cat?.name ?? ""}
+        right={
+          <TouchableOpacity onPress={showMenu} style={screenHeaderButtonStyle} disabled={loading}>
             {deleting ? (
               <ActivityIndicator color={colors.text} size="small" />
             ) : (
               <Ionicons name="menu" size={24} color={loading ? colors.icon : colors.text} />
             )}
           </TouchableOpacity>
-        </View>
-      </View>
+        }
+      />
 
       {loading || !cat ? (
         <View style={styles.centered}>
@@ -172,6 +165,8 @@ export default function CatDetailScreen() {
           </ThemedView>
         </ScrollView>
       )}
+
+      {!loading && cat && <CatBottomTabs catId={id} active="detail" />}
     </View>
   );
 }
@@ -188,26 +183,6 @@ function InfoItem({ label, value }: { label: string; value: string }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-  },
-  headerBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    height: 44,
-    paddingHorizontal: 4,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "rgba(0,0,0,0.15)",
-  },
-  headerButton: {
-    width: 44,
-    height: 44,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: "center",
-    fontSize: 17,
-    fontWeight: "600",
   },
   centered: {
     flex: 1,

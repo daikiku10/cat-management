@@ -6,6 +6,7 @@ import { list } from "./list";
 import { detail } from "./detail";
 import { update } from "./update";
 import { deleteCat } from "./delete";
+import { feedingLogRoutes } from "./feeding-logs";
 
 const catRoutes = new Hono<HonoEnv>();
 
@@ -16,5 +17,6 @@ catRoutes.route("/", list);
 catRoutes.route("/", detail);
 catRoutes.route("/", update);
 catRoutes.route("/", deleteCat);
+catRoutes.route("/", feedingLogRoutes);
 
 export { catRoutes };

@@ -18,6 +18,14 @@ export default function CatsLayout() {
           presentation: "modal",
         }}
       />
+      <Stack.Screen name="feeding-logs/[id]" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="feeding-logs/form"
+        options={{
+          headerShown: false,
+          presentation: "modal",
+        }}
+      />
     </Stack>
   );
 }
