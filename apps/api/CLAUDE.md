@@ -48,6 +48,8 @@ cd apps/api && pnpm build   # ビルド
 
 - `src/app.ts` に Hono アプリ本体（ミドルウェア・ルーティング）を集約。`src/index.ts`（ローカル/Node常駐サーバー用）と `api/[[...route]].ts`（Vercel Functions 用、`hono/vercel` の `handle()` を使用）の両方から読み込む
 - Vercel プロジェクトの Root Directory は `apps/api` を指定し、環境変数（上記）をダッシュボードで設定する
+- **Framework Preset は必ず「Other」にする**。「Hono」プリセットを選ぶと、`api/[[...route]].ts` とは別に `src/app.ts` を直接ラップした謎の関数（`/` にマッピングされる）が自動生成され、`@/*` エイリアスが解決できず壊れる
+- 「Other」プリセットは静的サイト用に `public` ディレクトリの存在を前提とするため、ダミーの `public/index.html` を置いている（API専用プロジェクトでもビルドエラーを避けるため）
 
 ## 主要パターン
 
