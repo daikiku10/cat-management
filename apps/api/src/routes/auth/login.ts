@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { loginSchema } from "@/lib/validators/auth";
-import { users } from "@repo/db";
+import { sessions, users } from "@repo/db";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { vValidator } from "@hono/valibot-validator";
@@ -8,6 +8,9 @@ import { validationHook } from "@/lib/validators";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
+import { nanoid } from "nanoid";
+
+const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
 
 // タイミング攻撃対策：ユーザーが存在しない場合も bcrypt.compare を実行して応答時間を均一化する
 const DUMMY_HASH = "$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWq";
@@ -28,7 +31,12 @@ login.post("/", vValidator("json", loginSchema, validationHook), async (c) => {
     throw new HTTPException(401, { message: "メールアドレスまたはパスワードが正しくありません" });
   }
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
+  const jti = nanoid();
+  const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
+
+  await db.insert(sessions).values({ id: jti, userId: user.id, expiresAt });
+
+  const token = jwt.sign({ userId: user.id, jti }, process.env.JWT_SECRET!, {
     expiresIn: "7d",
   });
 

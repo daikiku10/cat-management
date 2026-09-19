@@ -10,6 +10,17 @@ export const users = sqliteTable("users", {
     .$defaultFn(() => new Date()),
 });
 
+export const sessions = sqliteTable("sessions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
 export const breeds = sqliteTable("breeds", {
   id: text("id").primaryKey(),
   name: text("name").notNull().unique(),
@@ -41,6 +52,11 @@ export const cats = sqliteTable("cats", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   cats: many(cats),
+  sessions: many(sessions),
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }));
 
 export const breedsRelations = relations(breeds, ({ many }) => ({
