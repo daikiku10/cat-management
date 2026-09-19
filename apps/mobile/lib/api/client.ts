@@ -2,6 +2,9 @@ import axios from "axios";
 import { getToken } from "@/lib/auth";
 
 const getBaseURL = () => {
+  if (process.env.EXPO_PUBLIC_API_URL) {
+    return process.env.EXPO_PUBLIC_API_URL;
+  }
   const host = process.env.EXPO_PUBLIC_API_HOST ?? "localhost";
   return `http://${host}:8080`;
 };
