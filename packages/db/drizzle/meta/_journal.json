@@ -36,13 +36,6 @@
       "when": 1786600261346,
       "tag": "0004_lethal_fantastic_four",
       "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1789797926402,
-      "tag": "0005_cheerful_expediter",
-      "breakpoints": true
     }
   ]
 }
