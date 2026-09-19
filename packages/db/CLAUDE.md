@@ -22,6 +22,7 @@ cd packages/db && pnpm db:seed       # 猫種マスタ(breeds)のシード投入
 - `cats.ownerId` は `users.id` への外部キー（カスケード削除）
 - `createdAt` / `updatedAt` は `$defaultFn` / `$onUpdateFn` でスキーマ側に自動設定。アプリ側で `new Date()` を渡さない
 - ワークスペース依存として `@repo/db` でインポート
+- `package.json` の `main` はビルド成果物（`dist/index.js`）を指す。実行時（Node/Vercel）はコンパイル済みJSしか解決できないため、`src/schema.ts` 等を変更したら他パッケージから参照する前に `pnpm build` を実行する（`types` は `src/index.ts` を指しているため型チェックはビルド不要で最新に追従する）
 
 ## 主要パターン
 
