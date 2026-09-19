@@ -50,6 +50,31 @@ export const cats = sqliteTable("cats", {
     .$onUpdateFn(() => new Date()),
 });
 
+export const feedingLogs = sqliteTable("feeding_logs", {
+  id: text("id").primaryKey(),
+  catId: text("cat_id")
+    .notNull()
+    .references(() => cats.id, { onDelete: "cascade" }),
+  amount: real("amount"),
+  foodType: text("food_type"),
+  memo: text("memo"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const poopLogs = sqliteTable("poop_logs", {
+  id: text("id").primaryKey(),
+  catId: text("cat_id")
+    .notNull()
+    .references(() => cats.id, { onDelete: "cascade" }),
+  condition: text("condition").$type<"good" | "soft" | "hard" | "diarrhea">(),
+  memo: text("memo"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
   cats: many(cats),
   sessions: many(sessions),
@@ -63,7 +88,17 @@ export const breedsRelations = relations(breeds, ({ many }) => ({
   cats: many(cats),
 }));
 
-export const catsRelations = relations(cats, ({ one }) => ({
+export const catsRelations = relations(cats, ({ one, many }) => ({
   owner: one(users, { fields: [cats.ownerId], references: [users.id] }),
   breed: one(breeds, { fields: [cats.breedId], references: [breeds.id] }),
+  feedingLogs: many(feedingLogs),
+  poopLogs: many(poopLogs),
+}));
+
+export const feedingLogsRelations = relations(feedingLogs, ({ one }) => ({
+  cat: one(cats, { fields: [feedingLogs.catId], references: [cats.id] }),
+}));
+
+export const poopLogsRelations = relations(poopLogs, ({ one }) => ({
+  cat: one(cats, { fields: [poopLogs.catId], references: [cats.id] }),
 }));
