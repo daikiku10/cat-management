@@ -19,7 +19,7 @@
     "hono": "^4.11.1",
     "hono-rate-limiter": "^0.5.3",
     "jsonwebtoken": "^9.0.3",
-    "nanoid": "^5.1.6",
+    "nanoid": "^3.3.8",
     "valibot": "^1.2.0"
   },
   "devDependencies": {
