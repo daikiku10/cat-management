@@ -42,6 +42,12 @@ cd apps/api && pnpm build   # ビルド
 - `DATABASE_URL` - LibSQL 接続文字列
 - `TORSO_TOKEN` - Turso 認証トークン
 - `JWT_SECRET` - JWT 署名シークレット
+- `CORS_ORIGIN` - CORS で許可するオリジン（カンマ区切りで複数指定可、未設定時はすべて拒否）
+
+## デプロイ（Vercel）
+
+- `src/app.ts` に Hono アプリ本体（ミドルウェア・ルーティング）を集約。`src/index.ts`（ローカル/Node常駐サーバー用）と `api/[[...route]].ts`（Vercel Functions 用、`hono/vercel` の `handle()` を使用）の両方から読み込む
+- Vercel プロジェクトの Root Directory は `apps/api` を指定し、環境変数（上記）をダッシュボードで設定する
 
 ## 主要パターン
 

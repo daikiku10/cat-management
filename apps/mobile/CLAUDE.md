@@ -28,7 +28,8 @@ cd apps/mobile && pnpm lint     # Lint
 
 ## 環境変数（apps/mobile/.env.local）
 
-- `EXPO_PUBLIC_API_HOST` - API ホスト（デフォルト: `localhost`、ポート 8080）
+- `EXPO_PUBLIC_API_HOST` - API ホスト（デフォルト: `localhost`、ポート 8080）。ローカル開発用
+- `EXPO_PUBLIC_API_URL` - API のフルURL（例: `https://xxxx.vercel.app`）。設定時は `EXPO_PUBLIC_API_HOST` より優先。本番ビルドで使用
 
 ## 主要パターン
 
