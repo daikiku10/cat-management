@@ -1,5 +1,8 @@
 // fallow-ignore-file unused-file
 // Vercel のファイルベースルーティングにより暗黙的に呼び出されるエントリーポイント
+// ファイル名は単一角括弧の `[...route].ts` にすること。二重角括弧の
+// `[[...route]].ts` はNext.js固有の「オプショナルcatch-all」構文で、
+// Vercelの汎用サーバーレス関数では1階層のパスしかマッチしなくなる。
 import { handle } from "hono/vercel";
 // tsc-alias で `@/*` を相対パスへ解決済みのビルド成果物を読み込む。
 // Vercel の関数バンドラーは tsconfig の paths を解決しないため、
