@@ -43,6 +43,7 @@ export default function RegisterScreen() {
       setLoading(false);
     } catch (e) {
       setLoading(false);
+      console.error("登録エラー:", e);
       if (isAxiosError(e) && e.response?.data?.error) {
         setError(e.response.data.error);
       } else {
