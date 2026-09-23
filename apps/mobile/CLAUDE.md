@@ -37,3 +37,10 @@ cd apps/mobile && pnpm lint     # Lint
 - Expo New Architecture 有効
 - TypeScript strict モード
 - `@repo/db` を通じて型とスキーマを共有
+
+## Web 版デプロイ（Vercel）
+
+- `vercel.json` で `npx expo export -p web` の静的出力（`dist`）を配信
+- Vercel プロジェクトの Root Directory は `apps/mobile`、環境変数 `EXPO_PUBLIC_API_URL` に API の URL を設定
+- API 側の `CORS_ORIGIN` に Web 版の URL を追加すること
+- Web ではトークンを `expo-secure-store` ではなく `localStorage` に保存（`lib/auth.ts`）
