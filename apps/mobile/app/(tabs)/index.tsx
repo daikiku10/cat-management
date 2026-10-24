@@ -92,7 +92,7 @@ export default function CatsScreen() {
         ListHeaderComponent={
           total > 0 ? (
             <ThemedText style={styles.header}>{total}匹の猫</ThemedText>
-          ) : null
+          ) : undefined
         }
       />
 

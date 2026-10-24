@@ -2,6 +2,9 @@
   "name": "cat-management",
   "private": true,
   "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev:api": "pnpm --filter api dev || true",
     "dev:mobile": "pnpm --filter mobile start",
@@ -17,6 +20,33 @@
     "db:studio": "pnpm --filter @repo/db db:studio"
   },
   "devDependencies": {
-    "fallow": "^3.10.0"
+    "fallow": "^3.35.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.28.2",
+      "@isaacs/brace-expansion": "5.0.1",
+      "minimatch": "10.2.6",
+      "ajv": "6.15.0",
+      "flatted": "3.4.4",
+      "brace-expansion": "5.0.12",
+      "node-forge": "1.4.0",
+      "picomatch": "4.0.7",
+      "yaml": "2.9.1",
+      "@xmldom/xmldom": "0.8.15",
+      "ws": "8.22.0",
+      "shell-quote": "1.12.0",
+      "js-yaml": "4.3.2",
+      "decode-uri-component": "0.5.1",
+      "browserslist": "4.29.4",
+      "@humanfs/node": "0.17.0",
+      "baseline-browser-mapping": "2.11.32",
+      "source-map-js": "1.2.2",
+      "compression": "1.8.2",
+      "follow-redirects": "1.16.1",
+      "@babel/core": "7.29.7",
+      "uuid": "11.1.1",
+      "zod": "4.6.6"
+    }
   }
 }

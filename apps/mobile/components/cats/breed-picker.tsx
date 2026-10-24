@@ -71,7 +71,7 @@ export function BreedPicker({ visible, selectedBreedId, onSelect, onClose }: Bre
               <ThemedText style={styles.empty}>
                 {breeds.length === 0 ? "品種一覧を取得できませんでした" : "該当する品種がありません"}
               </ThemedText>
-            ) : null
+            ) : undefined
           }
           renderItem={({ item }) => (
             <Pressable
