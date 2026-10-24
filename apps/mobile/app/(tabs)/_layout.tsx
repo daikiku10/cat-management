@@ -52,7 +52,11 @@ export default function TabLayout() {
         options={{
           title: "My Cats",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="pawprint.fill" color={color} />
+            <IconSymbol
+              size={28}
+              name="pawprint.fill"
+              color={typeof color === "string" ? color : colors.icon}
+            />
           ),
         }}
       />
